@@ -1,9 +1,15 @@
 // class made by William based on Conway's Game of Life code
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JComponent;
+import java.awt.*;
+
+import javax.imageio.ImageIO;
 
 public class Grid extends JComponent {
 
@@ -11,17 +17,19 @@ public class Grid extends JComponent {
 	public static final int ROWS = 12;
 	public static final int COLS = 12;
 	public static Cell[][] cell = new Cell[ROWS][COLS];
-	private final int X_GRID_OFFSET = 25; // 25 pixels from left
-	private final int Y_GRID_OFFSET = 40; // 40 pixels from top
+	private final int X_GRID_OFFSET = 50; // 50 pixels from left
+	private final int Y_GRID_OFFSET = 50; // 50 pixels from top
 	private final int CELL_WIDTH = 50;
 	private final int CELL_HEIGHT = 50;
 
 	private final int DISPLAY_WIDTH;
 	private final int DISPLAY_HEIGHT;
-	private boolean paintloop = false;
-	private boolean running = true;
 
+	private Fence[] innerFences = new Fence[20];
+	private Fence[] outerFences = new Fence[48];
+	
 	private Mho[] mhos = new Mho[12]; // list of all mhos
+	private Player player;
 
 
 	public Grid(int width, int height) {
@@ -30,6 +38,14 @@ public class Grid extends JComponent {
 		DISPLAY_HEIGHT = height;
 		init();
 
+	}
+
+	/**
+	 * Overrides the preferred size (of 0) to make it the correct with and height.
+	 */
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 	}
 
 	/**
@@ -46,10 +62,12 @@ public class Grid extends JComponent {
 				y = (int) Math.floor(12 * Math.random());
 				occupied = occupiedByFence(x, y);
 			}
+
+			innerFences[i] = new Fence(x, y);
 			cell[x][y].setFence(true);
 		}
 	}
-	
+
 	/**
 	 * Place mhos randomly in the interior so that no mhos overlap other mhos or fences.
 	 * Also initializes the list of mhos
@@ -68,7 +86,22 @@ public class Grid extends JComponent {
 			mhos[i] = new Mho(x, y);
 		}
 	}
-	
+
+	/**
+	 * Place the player where there is no mho or fence.
+	 */
+	private void placePlayer() {
+		boolean occupied = true;
+		int x = 0;
+		int y = 0;
+		while (occupied) {
+			x = (int) Math.floor(12 * Math.random());
+			y = (int) Math.floor(12 * Math.random());
+			occupied = occupiedByMho(x, y, mhos.length) || occupiedByFence(x, y);
+		}
+		player = new Player(x, y);
+	}
+
 	/**
 	 * This method loops through all existing mhos to see whether or not a certain cell is occupied by a mho
 	 * @param x The x-coordinate of the cell
@@ -87,7 +120,7 @@ public class Grid extends JComponent {
 		}
 		return occupied;
 	}
-	
+
 	/**
 	 * This method checks to see if a certain cell is occupied by a fence
 	 * @param x The x-coordinate of the cell
@@ -98,26 +131,49 @@ public class Grid extends JComponent {
 		return cell[x][y].getFence();
 	}
 
+	/**
+	 * Call methods to load the fence image, initialize the cells, add fences around the edge,
+	 * place fences and mhos, and place the player.
+	 */
 	public void init() {
 
-		setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+		initFenceImage();
 		initCells();
 		addOuterFences();
 		placeFences(20);
 		placeMhos(12);
+		placePlayer();
 		repaint();
 
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 
 		g.setColor(Color.BLACK);
 		drawGrid(g);
 		drawCells(g);
+		drawFences(g);
 		drawMhos(g);
-		
-		//drawFences(g);
+		drawPlayer(g);
 
+	}
+	
+	/**
+	 * Initializes the fence image
+	 */
+	public void initFenceImage() {
+		
+		try {
+
+			Fence.setImage(ImageIO.read(new File("fence.png")));
+
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+
+		}
+		
 	}
 
 	/**
@@ -142,27 +198,39 @@ public class Grid extends JComponent {
 	 */
 	public void addOuterFences() {
 
+		int outerFenceCount = 0;
+		
 		for (int row = 0; row < ROWS; row++) {
 
 			cell[row][0].setFence(true);
+			
+			outerFences[outerFenceCount++] = new Fence(row, 0);
+			
+			//outerFenceCount++;
+			
 			cell[row][COLS-1].setFence(true);
+			
+			outerFences[outerFenceCount++] = new Fence(row, COLS - 1);
+			
+			//outerFenceCount++;
 
 		}
 
 		for (int col = 0; col < COLS; col++) {
 
 			cell[0][col].setFence(true);
+						
+			outerFences[outerFenceCount++] = new Fence(0, col);
+			
+			//outerFenceCount++;
+			
 			cell[ROWS-1][col].setFence(true);
+			
+			outerFences[outerFenceCount++] = new Fence(ROWS - 1, col);
+			
+			//outerFenceCount++;
 
 		}
-
-	}
-
-	public void drawFences(Graphics g) {
-
-		Fence fence1 = new Fence(g);
-		fence1.drawFence();
-
 
 	}
 
@@ -201,7 +269,7 @@ public class Grid extends JComponent {
 		for (int row = 0; row < ROWS; row++) {
 
 			for (int col = 0; col < COLS; col++) {
-
+				//System.out.print(cell[row][col].myColor);
 				cell[row][col].draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH,
 						CELL_HEIGHT, g);
 
@@ -210,35 +278,64 @@ public class Grid extends JComponent {
 		}
 
 	}
-	
+
+	/**
+	 * Draws all the mhos on the grid
+	 * @param g The graphics component on which to draw the mhos
+	 */
 	void drawMhos(Graphics g) {
 		for (Mho mho : mhos) {
 			mho.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
 		}
 	}
 
-	private void nextTurn() {
+	/**
+	 * Draws the player
+	 * @param g The graphics component on which to draw the mhos
+	 */
+	void drawPlayer(Graphics g) {
+		player.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+	}
 
+	/*private void nextTurn() {
 
 		//repaint();
+
+	}*/
+
+	/**
+	 * Draws the inner and outer fences
+	 * @param g The graphics component on which to draw the mhos
+	 */
+	public void drawFences(Graphics g) {
+
+		for(Fence innerFence : innerFences) {
+
+			innerFence.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+
+		}
+
+		for(Fence outerFence : outerFences) {
+			
+			outerFence.draw(X_GRID_OFFSET, Y_GRID_OFFSET, CELL_WIDTH, CELL_HEIGHT, g);
+
+		}
 
 	}
 
 }
 
-class Cell {
+class Cell extends Entity {
 
-	private int myX, myY; // x,y position on grid
 	private boolean occupied;
 	private boolean myAlive; // alive (true) or dead (false)
-	private int myNeighbors; // count of neighbors with respect to x,y
-	private boolean myAliveNextTurn; // Used for state in next iteration
-	private Color myColor; // Based on fence/not fence
 	private boolean isFence; // Whether or not there is a fence in this cell
 	private final Color DEFAULT_FENCE = Color.ORANGE;
 	private final Color DEFAULT_EMPTY = Color.GRAY;
 
-	private final Color MHO = Color.RED;
+	//private static Image fence;
+
+	// private final Color MHO = Color.RED;
 
 	public Cell(int x, int y) {
 
@@ -246,23 +343,13 @@ class Cell {
 
 	}
 
-	public Cell(int row, int col, boolean isFence) {
+	public Cell(int col, int row, boolean isFence) {
 
 		this.isFence = isFence;
-		this.myX = col;
-		this.myY = row;
-
-		if (this.isFence) {
-
-			this.myColor = DEFAULT_FENCE;
-
-		}
-
-		else {
-
-			this.myColor = DEFAULT_EMPTY;
-
-		}
+		this.x = col;
+		this.y = row;
+		this.myColor = DEFAULT_EMPTY;
+		
 	}
 
 	public boolean getAlive() {
@@ -271,52 +358,14 @@ class Cell {
 
 	}
 
-	public int getX() {
+	public void setFence(boolean isFence) {
 
-		return myX;
-
-	}
-
-	public int getY() {
-
-		return myY;
-
-	}
-
-	public boolean setFence(boolean isFence) {
 		this.isFence = isFence;
-		if (this.isFence) {
-			this.myColor = DEFAULT_FENCE;
-		}
-		else {
-			this.myColor = DEFAULT_EMPTY;
-		}
-		return isFence;
+
 	}
-	
+
 	public boolean getFence() {
 		return isFence;
-	}
-
-	/**
-	 * Draws each cell according to the bounding gridlines
-	 * @param x_offset 
-	 * @param y_offset
-	 * @param width
-	 * @param height
-	 * @param g
-	 */
-	public void draw(int x_offset, int y_offset, int width, int height,
-			Graphics g) {
-
-		int xleft = x_offset + 1 + (myX * (width + 1));
-		int xright = x_offset + width + (myX * (width + 1));
-		int ytop = y_offset + 1 + (myY * (height + 1));
-		int ybottom = y_offset + height + (myY * (height + 1));
-		Color temp = g.getColor();
-
-		g.setColor(myColor);
-		g.fillRect(xleft, ytop, width, height);
 	}
 
 	public void setOccupied(boolean newOccupied) {
@@ -331,20 +380,13 @@ class Cell {
 
 	}
 
-	public void setEntity() {
-
+	/*public void setEntity() {
 
 
 	}
 
-	/*public Entity getEntity() {
+	public Entity getEntity() {
 
-
-	}*/
-
-	/*public void setMho() { Cells should not have the property of being a Mho or not because that makes it awkward to move them around
-
-		this.myColor = MHO;
 
 	}*/
 
