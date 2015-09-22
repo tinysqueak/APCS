@@ -1,2 +1,2 @@
 # APCS
-APCS projects and assignments
+APCS assignments
