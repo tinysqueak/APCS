@@ -1,7 +1,6 @@
 
 public class Rational {
 
-
 	private int numerator;
 	private int denominator;
 
@@ -19,34 +18,34 @@ public class Rational {
 
 	}
 
-	public static void printRational(Rational rational) {
+	public void printRational() {
 
-		System.out.println(rational.numerator + "/" + rational.denominator);
-
-	}
-
-	public static void negate(Rational rational) {
-
-		rational.numerator *= -1;
+		System.out.println(this.numerator + "/" + this.denominator);
 
 	}
 
-	public static void invert(Rational rational) {
+	public void negate() {
 
-		int numerator = rational.numerator;
-
-		rational.numerator = rational.denominator;
-		rational.denominator = numerator;
+		this.numerator *= -1;
 
 	}
 
-	public static double toDouble(Rational rational) {
+	public void invert() {
 
-		return (double)(rational.numerator / rational.denominator);
+		int numerator = this.numerator;
+
+		this.numerator = this.denominator;
+		this.denominator = numerator;
 
 	}
 
-	public static Rational reduce(Rational rational) {
+	public double toDouble() {
+
+		return (double)(this.numerator) / (double)(this.denominator);
+
+	}
+
+	public Rational reduce() {
 
 		/*int gcdnum = gcf(rational.numerator, rational.numerator);
 
@@ -60,17 +59,17 @@ public class Rational {
 
 		int gcd;
 
-		if(Math.abs(rational.numerator) >= Math.abs(rational.denominator)) {
+		if(Math.abs(this.numerator) >= Math.abs(this.denominator)) {
 
-			gcd = gcf(rational.numerator, rational.denominator);
+			gcd = gcf(this.numerator, this.denominator);
 
 		} else {
 
-			gcd = gcf(rational.denominator, rational.numerator);
+			gcd = gcf(this.denominator, this.numerator);
 
 		}
 
-		return new Rational(rational.numerator / gcd, rational.denominator / gcd);
+		return new Rational(this.numerator / gcd, this.denominator / gcd);
 
 
 	}
@@ -108,13 +107,13 @@ public class Rational {
 
 	}
 
-	public static Rational reduceEuclid(Rational rational) {
+	public Rational reduceEuclid() {
 
 
-		int gcd = rational.numerator >= rational.numerator ? 
-				gcdEuclid(rational.numerator, rational.denominator) : gcdEuclid(rational.denominator, rational.numerator);
+		int gcd = this.numerator >= this.numerator ? 
+				gcdEuclid(this.numerator, this.denominator) : gcdEuclid(this.denominator, this.numerator);
 
-				return new Rational(rational.numerator / gcd, rational.denominator / gcd);
+		return new Rational(this.numerator / gcd, this.denominator / gcd);
 
 
 	}
@@ -131,13 +130,16 @@ public class Rational {
 
 	}
 
-	public static Rational add(Rational rational1, Rational rational2) {
+	public Rational add(Rational rational2) {
 
-		int numSum = rational1.numerator * rational2.denominator + rational2.numerator * rational1.denominator;
+		Rational sum;
 		
-		int denomSum = rational1.denominator * rational2.denominator;
+		int numSum = this.numerator * rational2.denominator + rational2.numerator * this.denominator;
+		int denomSum = this.denominator * rational2.denominator;
 		
-		return reduce(new Rational(numSum, denomSum));
+		sum = new Rational(numSum, denomSum);
+		
+		return sum.reduce();
 
 	}
 
@@ -147,26 +149,26 @@ public class Rational {
 		test.numerator = 1;
 		test.denominator = 2;
 
-		printRational(test);
+		test.printRational();
 
-		negate(test);
-		printRational(test);
+		test.negate();
+		test.printRational();
 
-		invert(test);
-		printRational(test);
+		test.invert();
+		test.printRational();
 
-		System.out.println(toDouble(test));
+		System.out.println(test.toDouble());
 
 		Rational gcdTest = new Rational(-252, 105);
-		printRational(reduce(gcdTest));
+		gcdTest.reduce().printRational();
 
 		Rational gcdEuclid = new Rational(-1, 3);
-		printRational(reduceEuclid(gcdEuclid));
+		gcdEuclid.reduceEuclid().printRational();
 		
 		Rational rational1 = new Rational(1, 6);
 		Rational rational2 = new Rational(1, 3);
 		
-		printRational(add(rational1, rational2));
+		rational1.add(rational2).printRational();
 
 	}
 
