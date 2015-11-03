@@ -1,9 +1,7 @@
 
 public class Pascal {
-
-
-
-
+	
+	
 
 
 
