@@ -5,6 +5,7 @@ public class Function {
 	public static void main(String[] args) {
 		
 		System.out.println(recursive(3));
+		System.out.println(iterative(3));
 		
 	}
 	
@@ -20,7 +21,7 @@ public class Function {
 		
 	}
 	
-	public static int iterative(int first, int second, int third, int n) {
+	public static int iterative(int n) {
 		
 		if(n < 3) {
 			
@@ -28,7 +29,16 @@ public class Function {
 			
 		}
 		
+		int result = 0;
 		
+		while(n >= 3) {
+			
+			result += iterative(n - 1) + 2 * iterative(n - 2) + 3 * iterative(n - 3);
+			n--;
+			
+		}
+		
+		return result;
 		
 	}
 	
