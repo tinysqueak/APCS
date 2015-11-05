@@ -4,8 +4,8 @@ public class Function {
 	
 	public static void main(String[] args) {
 		
-		System.out.println(recursive(3));
-		System.out.println(iterative(3));
+		System.out.println(recursive(4));
+		System.out.println(iterative(4, 4));
 		
 	}
 	
@@ -21,26 +21,19 @@ public class Function {
 		
 	}
 	
-	public static int iterative(int n) {
+	public static int iterative(int n, int counter) {
 		
-		if(n < 3) {
+		if(counter < 3) {
 			
 			return n;
 			
 		}
 		
-		int result = 0;
-		
-		while(n >= 3) {
-			
-			result += iterative(n - 1) + 2 * iterative(n - 2) + 3 * iterative(n - 3);
-			n--;
-			
-		}
-		
-		return result;
+		return iterative((n - 1) + 2 * (n - 2) + 3 * (n - 3), --counter);
 		
 	}
+	
+	
 	
 	
 }
