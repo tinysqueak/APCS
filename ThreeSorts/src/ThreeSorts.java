@@ -43,30 +43,6 @@ public class ThreeSorts {
 	public static int[] insertionSort(int[] array) {
 
 		int[] sorted = array.clone();
-		/*
-		for(int i = 1; i < sorted.length; i++) {
-
-			int insert = sorted[i];
-
-			int compare = i - 1;
-
-			while(compare >= 0) {
-
-				if(sorted[compare] > insert) {
-
-					sorted[compare + 1] = sorted[compare];
-
-				}
-
-				compare--;
-
-			}
-
-			sorted[compare + 1] = insert;
-
-		}
-
-		 */
 
 		for(int first = 1; first < sorted.length; first++) {
 
