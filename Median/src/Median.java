@@ -36,7 +36,7 @@ public class Median {
 	/**
 	 * Uses the algorithm for quickSort to find the median of the <code>int[]</code>. First partitions
 	 * the list by passing it into the <code>partition</code> method, then determines the index of the
-	 * median and compares this with the index of the pivot to determine which section of the arary to
+	 * median and compares this with the index of the pivot to determine which section of the array to
 	 * recurse into next.
 	 * 
 	 * @param list The <code>int[]</code> on which to find the median/quickSort
