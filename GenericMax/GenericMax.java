@@ -68,11 +68,9 @@ public class GenericMax<T extends Comparable<T>> extends PriorityQueue<T>{
 		test.add(1);
 		test.add(2);
 		test.add(3);
+				
 		
-		ArrayList<GenericMax> test1 = new ArrayList<GenericMax>();
-		
-		
-		System.out.println("New Max: " + newMax(test));
+		System.out.println("New Max: " + staticGenericMax(test));
 		
 		GenericMax<Integer> asdf2 = new GenericMax<Integer>(test);
 		System.out.println(Collections.max(asdf2));
