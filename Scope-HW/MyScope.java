@@ -1,11 +1,11 @@
 
 public class MyScope {
-	
+
 	int a = 2;
 	static int b = 3;
-	
+
 	public static void main(String[] args) {
-		
+
 		MyScope myInstance = new MyScope();
 		MyScope myOtherInstance = new MyScope();
 		double a = 3.14;
@@ -20,6 +20,6 @@ public class MyScope {
 		System.out.println(myInstance.a);
 		System.out.println(myOtherInstance.a);
 		System.out.println(b);
-		
+
 	}
 }

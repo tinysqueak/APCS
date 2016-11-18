@@ -1,5 +1,5 @@
 
-/* 
+/*
  * Example code for Think Java (http://thinkapjava.com)
  *
  * Copyright(c) 2011 Allen B. Downey
@@ -32,65 +32,65 @@ public class PokerHand extends Deck {
 
 			}
 		}
-		
+
 		return true;
 
 	}
-	
+
 	public boolean hasThreeKind() {
-		
+
 		int count = 0;
-		
+
 		ArrayList<Card> handList = new ArrayList<Card>(Arrays.asList(hand));
-		
+
 		for(int i = 0; i < handList.size(); i++) {
-			
+
 			count = 0;
-			
+
 			for(int j = 0; j < handList.size(); j++) {
-								
+
 				if(handList.get(i).rank == handList.get(j).rank) {
-					
+
 					count++;
-					
+
 				}
-				
+
 				if(count == 3) {
-					
+
 					for(int k = 0; k < handList.size(); k++) {
-						
+
 						if(handList.get(i).rank == handList.get(k).rank) {
-							
+
 							handList.remove(k);
-							
+
 						}
-						
+
 					}
-					
+
 					break;
-					
+
 				}
-				
-				
+
+
 			}
-			
+
 			if(count == 3) {
-				
+
 				break;
-				
+
 			}
-						
-			
+
+
 		}
-		
+
 		if(count == 3 && handList.get(0) != handList.get(1)) {
-			
+
 			return true;
-			
+
 		}
-		
+
 		return false;
-		
+
 	}
 
 }

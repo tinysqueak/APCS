@@ -27,7 +27,7 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 import java.io.*;
 import java.util.List;
@@ -97,7 +97,7 @@ public class ListOfNumbers {
 
 				list.add(number);
 
-			}   		
+			}
 
 			reader.close();
 
@@ -140,13 +140,13 @@ public class ListOfNumbers {
 			if (input != null) {
 
 				try {
-					
+
 					input.close();
-					
+
 				} catch (IOException e) {
-					
+
 					e.printStackTrace();
-					
+
 				}
 
 			}

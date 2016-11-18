@@ -1,4 +1,4 @@
-/* 
+/*
  * Example code for Think Java (http://thinkapjava.com)
  *
  * Copyright(c) 2011 Allen B. Downey
@@ -33,7 +33,7 @@ public class CardSoln3 {
 		// check that findBisect finds each card
 		int index;
 		for (int i=0; i<52; i++) {
-			index = deck.findBisect(deck.cards[i], 0, 
+			index = deck.findBisect(deck.cards[i], 0,
 					deck.cards.length-1);
 			if (index != i) {
 				System.out.println("Not found!");
@@ -83,14 +83,14 @@ class Card {
 	/*
 	 * No-argument constructor.
 	 */
-	public Card() { 
+	public Card() {
 		this.suit = 0;  this.rank = 0;
 	}
 
 	/*
 	 * Constructor with arguments.
 	 */
-	public Card(int suit, int rank) { 
+	public Card(int suit, int rank) {
 		this.suit = suit;  this.rank = rank;
 	}
 
@@ -218,7 +218,7 @@ class Deck {
 
 	/*
 	 * Chooses a random integer between low and high, including low,
-	 * not including high. 
+	 * not including high.
 	 */
 	public int randInt(int low, int high) {
 		// Because Math.random can't return 1.0, and (int)
@@ -312,50 +312,50 @@ class Deck {
 				result.cards[k] = d1.cards[i];  i++;
 			} else {
 				result.cards[k] = d2.cards[j];  j++;
-			}			
+			}
 		}
 
 		return result;
 	}
-	
+
 	public Deck merge(Deck d2) {
 
 		Deck result = new Deck(this.cards.length + d2.cards.length);
-		
+
 		int choice;
 		int i = 0;
 		int j = 0;
-		
+
 		for(int k = 0; k < result.cards.length; k++) {
-			
+
 			choice = 1;
-			
+
 			if(i == this.cards.length)
-				
+
 				choice = 2;
-			
+
 			else if(j == d2.cards.length)
-				
+
 				choice = 1;
-			
+
 			else if(this.cards[i].compareTo(d2.cards[j]) > 0)
-				
+
 				choice = 2;
-			
+
 			if(choice == 1) {
-				
+
 				result.cards[k] = this.cards[i];
 				i++;
-				
+
 			} else {
-				
+
 				result.cards[k] = d2.cards[j];
 				j++;
-				
+
 			}
-			
+
 		}
-		
+
 		return result;
 
 	}
@@ -380,6 +380,6 @@ class Deck {
 		// merge the two halves and return the result
 		// (d1 and d2 get garbage collected)
 		//return merge(d1, d2);
-		return d1.merge(d2);	
+		return d1.merge(d2);
 	}
 }

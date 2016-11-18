@@ -1,8 +1,8 @@
 
 /**
- * Quicksort code obtained originally 
+ * Quicksort code obtained originally
  * <a href = "https://www.utdallas.edu/~dheroy/4331code/book/QuickSort.java">here</a>
- * 
+ *
  * @author William Yang
  *
  */
@@ -22,7 +22,7 @@ public class Median {
 	}
 
 	/**
-	 * Invokes the overloaded <code>quickSort</code> method, passing 0 for the first index 
+	 * Invokes the overloaded <code>quickSort</code> method, passing 0 for the first index
 	 * and <code>list.length - 1</code> for the last index
 	 * @param list The <code>int[]</code> to pass to the overloaded method
 	 * @return The median of the list as a <code>double</code>
@@ -38,10 +38,10 @@ public class Median {
 	 * the list by passing it into the <code>partition</code> method, then determines the index of the
 	 * median and compares this with the index of the pivot to determine which section of the array to
 	 * recurse into next.
-	 * 
+	 *
 	 * @param list The <code>int[]</code> on which to find the median/quickSort
 	 * @param first The starting index of the array on which to sort
-	 * @param last The last index of the array on which to sort 
+	 * @param last The last index of the array on which to sort
 	 * @return The median of the list as a <code>double</code>
 	 */
 	public static double quickSort(int[] list, int first, int last) {
@@ -56,7 +56,7 @@ public class Median {
 			if(list.length % 2 != 0) {
 
 				//after partitioning, the pivot is already sorted in place
-				//so if the pivot's index is equal to the median index, than the 
+				//so if the pivot's index is equal to the median index, than the
 				//pivot value is the median for an odd number of elements
 				if(pivotIndex == medianIndex) {
 
@@ -86,7 +86,7 @@ public class Median {
 					return (list[pivotIndex] + quickSort(list, medianIndex, last)) / 2.0;
 
 				}
-				
+
 				}
 
 			}
@@ -106,7 +106,7 @@ public class Median {
 	}
 
 	/**
-	 * Partitions a section of the array. Places all the elements less than the pivot (the 
+	 * Partitions a section of the array. Places all the elements less than the pivot (the
 	 * first element) to the left of the pivot's proper index and all the elements greater
 	 * than the pivot to right of the pivot's index. Places the pivot in its proper index
 	 * after partitioning the rest of the array.
@@ -119,7 +119,7 @@ public class Median {
 
 		//value of the pivot is the first element in the section of the array to be considered
 		int pivot = list[first];
-		
+
 		//comparison indices, low starts from the element immediately after the pivot
 		//high starts at the last index
 		int low = first + 1;

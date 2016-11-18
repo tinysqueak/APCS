@@ -77,7 +77,7 @@ public class BrokenToaster {
 		toaster.toast();
 		System.out.println("Toaster is full: " + toaster.isFull());
 		toaster.addBread(wholeWheat);
-	
+
 	}
 
 }

@@ -110,14 +110,14 @@ public class Rational {
 	public Rational reduceEuclid() {
 
 
-		int gcd = this.numerator >= this.numerator ? 
+		int gcd = this.numerator >= this.numerator ?
 				gcdEuclid(this.numerator, this.denominator) : gcdEuclid(this.denominator, this.numerator);
 
 		return new Rational(this.numerator / gcd, this.denominator / gcd);
 
 
 	}
-	
+
 	public static int gcdEuclid(int larger, int smaller) {
 
 		if(smaller != 0) {
@@ -133,12 +133,12 @@ public class Rational {
 	public Rational add(Rational rational2) {
 
 		Rational sum;
-		
+
 		int numSum = this.numerator * rational2.denominator + rational2.numerator * this.denominator;
 		int denomSum = this.denominator * rational2.denominator;
-		
+
 		sum = new Rational(numSum, denomSum);
-		
+
 		return sum.reduce();
 
 	}
@@ -164,10 +164,10 @@ public class Rational {
 
 		Rational gcdEuclid = new Rational(-1, 3);
 		gcdEuclid.reduceEuclid().printRational();
-		
+
 		Rational rational1 = new Rational(1, 6);
 		Rational rational2 = new Rational(1, 3);
-		
+
 		rational1.add(rational2).printRational();
 
 	}

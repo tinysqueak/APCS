@@ -5,21 +5,21 @@
  *
  */
 public class ComplexDemo {
-	
+
 	public static void main(String[] args) {
 
 		Complex c = new Complex(3, 4);
 		Complex d = new Complex(3, 4);
 		Complex e = new Complex(5, 12);
-		
+
 		System.out.println(c.abs());
 		System.out.println(e.abs());
-		
+
 		System.out.println();
 
 		System.out.println(Complex.equals(c, d));
 		System.out.println(Complex.equals(c, e));
-		
+
 	}
 
 }
